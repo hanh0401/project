@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CHeader from '../../components/CHeader.jsx';
 import CSearch from '../../components/CSearch.jsx';
 import Footer from '../../components/Footer.jsx';
-import { APICli} from '../../backend/axios.jsx'
+// import { APICli} from '../../backend/axios.jsx'
 
 const CandidateHome = () => {
   const [data,setData] = useState(null);

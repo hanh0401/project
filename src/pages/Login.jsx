@@ -32,15 +32,15 @@ const Login = () => {
             const response = await api_client.login(formData);
             console.log(response);
             // Kiểm tra phản hồi từ server
-            if (response.success && response.data.token) {
+            if (response.success) {
                 // Lưu token vào localStorage hoặc state tùy ý
                 localStorage.setItem('authToken', response.data.token);
 
                 // Điều hướng đến trang tương ứng dựa trên vai trò
                 if (userRole === 'candidate') {
-                    navigate('/forCandidates/Home');
+                    navigate('/candidates/Home');
                 } else if (userRole === 'employer') {
-                    navigate('/forEmployers/Home');
+                    navigate('/employers/Home');
                 }
             } else {
                 // Hiển thị lỗi nếu không nhận được token

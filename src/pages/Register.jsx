@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { APIClient } from '../backend/api.ts';
+import { ssrDynamicImportKey } from 'vite/runtime';
 
 const Register = () => {
   const [formData, setFormData] = useState({
     // username: '',
     password: '',
     email: '',
+    username: '',
+    address:'',
     phone_number: '',
     confirmPassword: '',
     // userRole: 'candidates',
@@ -39,14 +42,13 @@ const Register = () => {
     try {
 
       const { confirmPassword, ...dataToSend } = formData;
-
       const response = await api_client.register(dataToSend);
       console.log(response);
       // Kiểm tra phản hồi từ server
-      if (response.success && response.data.token) {
-        console.log('DL đến server:', dataToSend);
+      if (response.success) {
+        // console.log('DL đến server:', dataToSend);
         // Lưu token vào localStorage hoặc state tùy ý
-        localStorage.setItem('authToken', response.data.token);
+        // localStorage.setItem('authToken', response.data.token);
 
         // Điều hướng đến trang tương ứng dựa trên vai trò
         alert('Đăng ký thành công!');
@@ -54,7 +56,7 @@ const Register = () => {
       } else {
           // Hiển thị lỗi nếu không nhận được token
           console.error('Lỗi khi đăng ký:', response);
-          setError('Đăng ký thất bại. Vui lòng kiểm tra lại thông tin.');
+          setError(`Đăng ký thất bại. Vui lòng kiểm tra lại thông tin. ${response.error.response.data.email[0] || response.error.response.data.email[0] }`);
       } 
     } catch (error) {
       // if (error.response && error.response.data) {
@@ -89,19 +91,27 @@ const Register = () => {
           onChange={handleRoleChange}
         /> Nhà tuyển dụng
       </label>
-        {/* <input 
+        <input 
           type="text" 
           name='username'
           placeholder="Tên người dùng" 
           value={formData.username} 
           onChange={handleInputChange} 
           required 
-        /> */}
+        />
         <input 
           type="email" 
           name='email'
           placeholder="Email" 
           value={formData.email} 
+          onChange={handleInputChange} 
+          required 
+        />
+        <input 
+          type="text" 
+          name="address"
+          placeholder="Address" 
+          value={formData.address} 
           onChange={handleInputChange} 
           required 
         />
