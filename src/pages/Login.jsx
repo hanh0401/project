@@ -33,9 +33,17 @@ const Login = () => {
             console.log(response);
             // Kiểm tra phản hồi từ server
             if (response.success) {
+                console.log(response);
                 // Lưu token vào localStorage hoặc state tùy ý
-                localStorage.setItem('authToken', response.data.token);
+                localStorage.setItem('authToken', response.data.access);
+                api_client.setAuthToken(response.data.access);
+                const userProfile = await api_client.getProfile();
+                console.log(userProfile);
+                if(userProfile){
+                    localStorage.setItem('userProfile', JSON.stringify(userProfile.data));
+                }
 
+                
                 // Điều hướng đến trang tương ứng dựa trên vai trò
                 if (userRole === 'candidate') {
                     navigate('/candidates/Home');
@@ -44,6 +52,7 @@ const Login = () => {
                 }
             } else {
                 // Hiển thị lỗi nếu không nhận được token
+                
                 setError('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
             }
         } catch (err) {

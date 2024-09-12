@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Link, useNavigate } from "react-router-dom"
 import { Navbar, Container, Nav } from 'react-bootstrap'
@@ -9,8 +9,21 @@ const CHeader = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Giả sử trạng thái đăng nhập
     const navigate = useNavigate();
   
+    const [userProfile, setUserProfile] = useState(null);
+
+    useEffect(() => {
+      const userProfile = localStorage.getItem('userProfile');
+      if (userProfile) {
+        setUserProfile(JSON.parse(userProfile));
+        setIsLoggedIn(true)
+      }
+      console.log(userProfile)
+    }, []);
+
     const handleLogout = () => {
+      localStorage.removeItem('userProfile');
       setIsLoggedIn(false); // Đặt lại trạng thái đăng xuất
+      setUserProfile(null); // Xóa thông tin người dùng
       // Xử lý logic đăng xuất (xóa token, session, v.v.)
       navigate('/'); // Điều hướng về trang chủ
     };
@@ -43,7 +56,9 @@ const CHeader = () => {
         </Navbar.Collapse>
         <Nav.Link as={Link} to="/employers/Home" className="order-sm-3">
             Dành cho nhà tuyển dụng
+            {userProfile && <div>{userProfile.username}</div>}
         </Nav.Link>
+        
       </Container>
     </Navbar>
   </>

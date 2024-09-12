@@ -343,6 +343,12 @@ export class APIClient {
         .catch((error: AxiosError) => ({ success: false, error }));
   }
 
+  async getProfile(id: string) {
+    return this.instance.get(`/api/profile`)
+        .then(response => ({ success: true, data: response.data }))
+        .catch((error: AxiosError) => ({ success: false, error }));
+  }
+
   async updateUser(id: string, data: any) {
     return this.instance.put(`/api/users/${id}/`, data)
         .then(response => ({ success: true, data: response.data }))
