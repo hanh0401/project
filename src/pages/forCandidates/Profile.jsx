@@ -7,11 +7,13 @@ import Footer from '../../components/Footer.jsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const CandidateProfile = () => {
+
+  const userProfile = JSON.parse(localStorage.getItem('userProfile'));
   // Initial form data for candidate's personal profile
   const [formData, setFormData] = useState({
     fullName: '',
-    email: '',
-    phone: '',
+    email: userProfile?.username,
+    phone: userProfile?.phone_number,
     address: '',
     education: '',
     experience: ''
